@@ -28,16 +28,49 @@ public class AlgoFrame extends JFrame {
     public int getCanvasWidth(){return canvasWidth;}
     public int getCanvasHeight(){return canvasHeight;}
 
+    private Circle[] circles;
+
+    public void render(Circle[] circles){
+        this.circles = circles;
+        this.repaint();
+    }
+
+
     //画布
     public class AlgoCanvas extends JPanel{
+
+        //设置双缓存
+    public AlgoCanvas(){
+        super(true);
+
+    }
+
         //Graphics是绘制的上下文环境，连接控件
         @Override
         public  void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         Graphics2D g2d = (Graphics2D)g;
+
+        //抗锯齿
+            RenderingHints hints = new RenderingHints(
+                                        RenderingHints.KEY_ANTIALIASING,
+                                        RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.addRenderingHints(hints);
+
+            //绘制很多圆
+            AlgoVisHelper.setStrokeWidth(g2d,1);
+            AlgoVisHelper.setColor(g2d,Color.red);
+            for(Circle circle:circles){
+                AlgoVisHelper.strokeCircle(g2d,circle.x,circle.y,circle.getR());
+            }
+
+
+
+
+
         //设置笔画宽度
-          AlgoVisHelper.setStrokeWidth(g2d,5);
+          /*AlgoVisHelper.setStrokeWidth(g2d,5);
 
         //线条颜色
             AlgoVisHelper.setColor(g2d,Color.green);
@@ -47,7 +80,7 @@ public class AlgoFrame extends JFrame {
             //基本图形对象,float更快，但是double更方便
            AlgoVisHelper.setColor(g2d,Color.red);
         AlgoVisHelper.strokeCircle(g2d,canvasWidth/2,canvasHeight/2,200);
-
+*/
 
        // g.drawOval(50,50,300,300);
     }
